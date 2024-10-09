@@ -9,4 +9,4 @@ down:
 
 re: down up
 
-.PHONY: up down
+.PHONY: up down build re
