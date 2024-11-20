@@ -3,30 +3,14 @@ version: '3.8'
 services:
   mariadb:
     build: ./requirements/mariadb
+    container_name: mariadb
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpressuser
-      MYSQL_PASSWORD: wordpresspass
-    volumes:
-      - mariadb_data:/var/lib/mysql
 
   nginx:
     build: ./requirements/nginx
+    container_name: nginx
     restart: always
     ports:
       - "443:443"
-    volumes:
-      - ./requirements/wordpress:/var/www/html
-      - ./requirements/nginx/ssl:/etc/ssl/certs
-      - ./requirements/nginx/conf.d:/etc/nginx/conf.d
 
-  wordpress:
-    build: ./requirements/wordpress
-    restart: always
-    volumes:
-      - ./requirements/wordpress:/var/www/html
 
-volumes:
-  mariadb_data:
