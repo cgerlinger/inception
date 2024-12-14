@@ -1,17 +1,25 @@
 FROM debian:bullseye
 
-RUN apt-get update && apt-get install -y php-fpm7.4 php-mysql wget unzip
+RUN apt-get update && apt-get install -y \
+	php7.4-fpm \
+	php7.4-mysqli \
+	php7.4-curl \
+	php7.4-gd \
+	php7.4-intl \
+	php7.4-mbstring \
+	php7.4-imagick \
+	php7.4-dom \
+	php7.4-zip \
+	curl \
+	wget
 
-RUN mkdir -p /var/www/html
+# WORKDIR /var/www/html
 
-# Download and extract WordPress
-RUN wget https://wordpress.org/latest.zip -P /tmp && \
-	unzip /tmp/latest.zip -d /var/www/html && \
-	rm /tmp/latest.zip
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
-# Adjust permissions
-RUN chown -R www-data:www-data /var/www/html/wordpress
+RUN mkdir /run/php
 
-RUN mkdir -p /run/php
+COPY tools/startup.sh /usr/local/bin/startup.sh
+RUN chmod +x /usr/local/bin/startup.sh
 
-CMD ["php-fpm7.4", "-F"]
+CMD ["/usr/local/bin/startup.sh"]
