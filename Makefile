@@ -1,16 +1,25 @@
-build:
-	docker-compose -f srcs/docker-compose.yml build
+validate-env:
+	@chmod +x srcs/validate_env.sh
+	@./srcs/validate_env.sh
+
+build: validate-env
+	@docker-compose -f srcs/docker-compose.yml build
 
 up: build
-	docker-compose -f srcs/docker-compose.yml up -d
+	@docker-compose -f srcs/docker-compose.yml up -d
 
 down:
-	docker-compose -f srcs/docker-compose.yml down
+	@docker-compose -f srcs/docker-compose.yml down
 
-# clean: down
-# 	docker system prune -af
-# 	docker volume rm $$(docker volume ls -q)
+reset: down
+	@docker volume rm -f srcs_mariadb srcs_wordpress
 
 re: down up
 
-.PHONY: up down build re clean
+status:
+	@docker ps -a
+	@docker volume ls
+	@docker network ls
+
+.PHONY: up down build re reset validate-env status
+
