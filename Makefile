@@ -1,7 +1,8 @@
 all: up
 
 up: build
-	@mkdir -p /home/cgerling/data
+	@mkdir -p /home/cgerling/data/mariadb
+	@mkdir -p /home/cgerling/data/wordpress
 	@docker compose -f srcs/docker-compose.yml up -d
 
 build: validate-env
@@ -15,8 +16,7 @@ validate-env:
 	@./srcs/validate_env.sh
 
 reset: down
-	@docker volume rm -f srcs_mariadb srcs_wordpress
-	@rm -rf /home/cgerling/data
+	@docker volume rm -f mariadb wordpress
 
 re: down up
 
