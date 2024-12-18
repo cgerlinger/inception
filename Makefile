@@ -17,13 +17,14 @@ validate-env:
 
 reset: down
 	@docker volume rm -f mariadb wordpress
+	@sudo chown -R cgerling:cgerling /home/cgerling/data
+	@rm -rf /home/cgerling/data
 
 re: down up
 
 status:
 	@docker ps -a
 	@docker volume ls
-	@docker network ls
 
 .PHONY: all up down build re reset validate-env status
 
