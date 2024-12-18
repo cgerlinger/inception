@@ -51,10 +51,20 @@ services:
 
 networks:
   inception:
+    name: inception
     driver: bridge
 
 volumes:
   mariadb:
-    driver: local
+    name: mariadb
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/cgerling/data/mariadb
   wordpress:
-    driver: local
+    name: wordpress
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/cgerling/data/wordpress
+
